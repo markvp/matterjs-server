@@ -16,7 +16,7 @@ import { mdiAlertCircleOutline, mdiPencil, mdiPlay, mdiRefresh } from "@mdi/js";
 import { css, html, LitElement, nothing, type TemplateResult } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { unsafeHTML } from "lit/directives/unsafe-html.js";
-import { clientContext } from "../client/client-context.js";
+import { clientContext, tickContext } from "../client/client-context.js";
 import { clusters } from "../client/models/descriptions.js";
 import { showAlertDialog } from "../components/dialog-box/show-dialog-box.js";
 import { showAttributeWriteDialog } from "../components/dialogs/dev/show-attribute-write-dialog.js";
@@ -75,8 +75,11 @@ function clusterAttributes(attributes: { [key: string]: any }, endpoint: number,
 
 @customElement("matter-cluster-view")
 class MatterClusterView extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @property()
     public node?: MatterNode;

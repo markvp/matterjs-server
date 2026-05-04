@@ -13,13 +13,16 @@ import type { MdDialog } from "@material/web/dialog/dialog.js";
 import { MatterClient, MatterNode } from "@matter-server/ws-client";
 import { html, LitElement } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import { clientContext } from "../../../client/client-context.js";
+import { clientContext, tickContext } from "../../../client/client-context.js";
 import { preventDefault } from "../../../util/prevent_default.js";
 
 @customElement("commission-node-dialog")
 export class ComissionNodeDialog extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @state() private _mode?: "wifi" | "thread" | "existing";
 

@@ -16,7 +16,7 @@ import { mdiAlertCircleOutline, mdiChevronRight } from "@mdi/js";
 import { LitElement, css, html } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { guard } from "lit/directives/guard.js";
-import { clientContext } from "../client/client-context.js";
+import { clientContext, tickContext } from "../client/client-context.js";
 import { DeviceType, clusters, device_types } from "../client/models/descriptions.js";
 import "../components/ha-svg-icon";
 import { formatHex, formatNodeAddress, getEffectiveFabricIndex } from "../util/format_hex.js";
@@ -52,8 +52,11 @@ export function getEndpointDeviceTypes(node: MatterNode, endpoint: number): Devi
 
 @customElement("matter-endpoint-view")
 class MatterEndpointView extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @property()
     public node?: MatterNode;

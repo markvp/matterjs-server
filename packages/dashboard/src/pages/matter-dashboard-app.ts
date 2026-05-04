@@ -9,7 +9,7 @@ import { MatterClient, MatterError } from "@matter-server/ws-client";
 import { mdiRefresh } from "@mdi/js";
 import { LitElement, PropertyValueMap, css, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
-import { clientContext } from "../client/client-context.js";
+import { clientContext, tickContext } from "../client/client-context.js";
 import "../components/ha-svg-icon";
 import type { Route } from "../util/routing.js";
 import "./components/header";
@@ -44,10 +44,13 @@ class MatterDashboardApp extends LitElement {
     @state()
     private _state: "connecting" | "connected" | "error" | "disconnected" = "connecting";
 
+    @state() private _tick = 0;
+
     /** Track whether nodes have been loaded at least once (to avoid redirecting before data arrives) */
     private _nodesLoaded = false;
 
-    private provider = new ContextProvider(this, { context: clientContext });
+    private clientProvider = new ContextProvider(this, { context: clientContext });
+    private tickProvider = new ContextProvider(this, { context: tickContext, initialValue: 0 });
 
     /** Reference to updateRoute function so it can be called from event listeners */
     private _updateRoute?: () => void;
@@ -107,7 +110,8 @@ class MatterDashboardApp extends LitElement {
         this.client.startListening().then(
             () => {
                 this._state = "connected";
-                this.provider.setValue(this.client, true);
+                this.clientProvider.setValue(this.client);
+                this.tickProvider.setValue(++this._tick);
                 this._setupEventListeners();
             },
             (_err: MatterError) => {
@@ -126,10 +130,10 @@ class MatterDashboardApp extends LitElement {
                 this._updateRoute();
             }
             this.requestUpdate();
-            this.provider.setValue(this.client, true);
+            this.tickProvider.setValue(++this._tick);
         });
         this.client.addEventListener("server_info_updated", () => {
-            this.provider.setValue(this.client, true);
+            this.tickProvider.setValue(++this._tick);
         });
         this.client.addEventListener("connection_lost", () => {
             this._state = "disconnected";

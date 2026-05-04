@@ -16,7 +16,7 @@ import { MatterClient } from "@matter-server/ws-client";
 import { mdiFile, mdiPlus } from "@mdi/js";
 import { LitElement, css, html, nothing } from "lit";
 import { customElement } from "lit/decorators.js";
-import { clientContext } from "../../client/client-context.js";
+import { clientContext, tickContext } from "../../client/client-context.js";
 import { showAlertDialog, showPromptDialog } from "../../components/dialog-box/show-dialog-box.js";
 import { showCommissionNodeDialog } from "../../components/dialogs/commission-node-dialog/show-commission-node-dialog.js";
 import "../../components/ha-svg-icon";
@@ -24,8 +24,11 @@ import { handleAsync } from "../../util/async-handler.js";
 
 @customElement("server-details")
 export class ServerDetails extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client?: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     protected override render() {
         if (!this.client) return html``;

@@ -13,7 +13,7 @@ import { isTestNodeId, MatterClient, MatterNode } from "@matter-server/ws-client
 import { mdiChevronRight } from "@mdi/js";
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property } from "lit/decorators.js";
-import { clientContext } from "../client/client-context.js";
+import { clientContext, tickContext } from "../client/client-context.js";
 import "../components/ha-svg-icon";
 import { getDeviceIcon } from "../util/device-icons.js";
 import { formatNodeAddress } from "../util/format_hex.js";
@@ -30,8 +30,11 @@ declare global {
 
 @customElement("matter-server-view")
 class MatterServerView extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @property()
     public nodes!: MatterClient["nodes"];

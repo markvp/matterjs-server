@@ -7,12 +7,12 @@
 import "@material/web/button/filled-button";
 import "@material/web/button/text-button";
 import "@material/web/dialog/dialog";
-import { consume } from "@lit/context";
 import "@material/web/divider/divider";
 import "@material/web/iconbutton/icon-button";
 import "@material/web/switch/switch";
 import type { MdDialog } from "@material/web/dialog/dialog.js";
 import type { MdSwitch } from "@material/web/switch/switch.js";
+import { consume } from "@lit/context";
 import "@material/web/textfield/outlined-text-field";
 import type { MdOutlinedTextField } from "@material/web/textfield/outlined-text-field.js";
 import { MatterClient } from "@matter-server/ws-client";
@@ -20,7 +20,7 @@ import { mdiAccessPoint, mdiEye, mdiEyeOff, mdiWifi } from "@mdi/js";
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, query, state } from "lit/decorators.js";
 import { handleAsync } from "../../../util/async-handler.js";
-import { clientContext } from "../../../client/client-context.js";
+import { clientContext, tickContext } from "../../../client/client-context.js";
 import { DevModeService } from "../../../util/dev-mode-service.js";
 import { preventDefault } from "../../../util/prevent_default.js";
 import "../../../components/ha-svg-icon.js";
@@ -29,8 +29,11 @@ import "./log-level-section.js";
 
 @customElement("settings-dialog")
 export class SettingsDialog extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client?: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @state() private _devMode = DevModeService.active;
 

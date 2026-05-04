@@ -15,7 +15,7 @@ import { mdiAlertCircleOutline, mdiChevronRight, mdiGraphOutline } from "@mdi/js
 import { css, html, LitElement } from "lit";
 import { customElement, property } from "lit/decorators.js";
 import { guard } from "lit/directives/guard.js";
-import { clientContext } from "../client/client-context.js";
+import { clientContext, tickContext } from "../client/client-context.js";
 import "../components/ha-svg-icon";
 import { getDeviceIcon, getEndpointIcon } from "../util/device-icons.js";
 import { formatNodeAddress, getEffectiveFabricIndex } from "../util/format_hex.js";
@@ -40,8 +40,11 @@ function getUniqueEndpoints(node: MatterNode) {
 
 @customElement("matter-node-view")
 class MatterNodeView extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @property()
     public node?: MatterNode;

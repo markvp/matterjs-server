@@ -8,7 +8,7 @@ import { consume } from "@lit/context";
 import { MatterClient, MatterNode } from "@matter-server/ws-client";
 import { LitElement, css, type CSSResultGroup } from "lit";
 import { property } from "lit/decorators.js";
-import { clientContext } from "../../client/client-context.js";
+import { clientContext, tickContext } from "../../client/client-context.js";
 import { reducedMotionStyles } from "../../util/shared-styles.js";
 
 /**
@@ -16,8 +16,11 @@ import { reducedMotionStyles } from "../../util/shared-styles.js";
  * Provides shared properties, styling, and helper methods for sending commands.
  */
 export abstract class BaseClusterCommands extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @property({ attribute: false })
     public node!: MatterNode;

@@ -13,7 +13,7 @@ import type { MatterClient, MatterNode } from "@matter-server/ws-client";
 import { mdiLoading } from "@mdi/js";
 import { LitElement, css, html, nothing, svg } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { clientContext } from "../../client/client-context.js";
+import { clientContext, tickContext } from "../../client/client-context.js";
 import { reducedMotionStyles } from "../../util/shared-styles.js";
 import { getNetworkType } from "./network-utils.js";
 
@@ -31,8 +31,11 @@ const WIFI_ATTRIBUTE_PATHS = ["0/54/0", "0/54/3", "0/54/4"]; // BSSID, Channel, 
 
 @customElement("update-connections-dialog")
 export class UpdateConnectionsDialog extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client!: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @property({ type: Object })
     public nodes: Record<string, MatterNode> = {};

@@ -12,7 +12,7 @@ import type { MdOutlinedSelect } from "@material/web/select/outlined-select.js";
 import { LogLevelString, MatterClient } from "@matter-server/ws-client";
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, query, state } from "lit/decorators.js";
-import { clientContext } from "../../../client/client-context.js";
+import { clientContext, tickContext } from "../../../client/client-context.js";
 import { fireAndForget, handleAsync } from "../../../util/async-handler.js";
 import { showAlertDialog } from "../../dialog-box/show-dialog-box.js";
 
@@ -30,8 +30,11 @@ const LOG_LEVELS: { value: LogLevelString; label: string }[] = [
  */
 @customElement("log-level-section")
 export class LogLevelSection extends LitElement {
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     public client?: MatterClient;
+
+    @consume({ context: tickContext, subscribe: true })
+    protected _tick = 0;
 
     @state() private _consoleLevel: LogLevelString = "info";
     @state() private _fileLevel: LogLevelString | null = null;
