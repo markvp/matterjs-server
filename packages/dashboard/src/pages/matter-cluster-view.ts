@@ -76,7 +76,6 @@ function clusterAttributes(attributes: { [key: string]: any }, endpoint: number,
 @customElement("matter-cluster-view")
 class MatterClusterView extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property()
@@ -111,7 +110,7 @@ class MatterClusterView extends LitElement {
     override render() {
         if (!this.node || this.endpoint == undefined || this.cluster == undefined) {
             return html`
-                <dashboard-header title="Not found" .client=${this.client} backButton="#"></dashboard-header>
+                <dashboard-header title="Not found" backButton="#"></dashboard-header>
                 <div class="not-found">
                     <ha-svg-icon .path=${mdiAlertCircleOutline}></ha-svg-icon>
                     <p>Node, endpoint, or cluster not found</p>

@@ -53,7 +53,6 @@ export function getEndpointDeviceTypes(node: MatterNode, endpoint: number): Devi
 @customElement("matter-endpoint-view")
 class MatterEndpointView extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property()
@@ -66,7 +65,7 @@ class MatterEndpointView extends LitElement {
     override render() {
         if (!this.node || this.endpoint == undefined) {
             return html`
-                <dashboard-header title="Not found" .client=${this.client} backButton="#"></dashboard-header>
+                <dashboard-header title="Not found" backButton="#"></dashboard-header>
                 <div class="not-found">
                     <ha-svg-icon .path=${mdiAlertCircleOutline}></ha-svg-icon>
                     <p>Node or endpoint not found</p>

@@ -32,7 +32,6 @@ const WIFI_ATTRIBUTE_PATHS = ["0/54/0", "0/54/3", "0/54/4"]; // BSSID, Channel, 
 @customElement("update-connections-dialog")
 export class UpdateConnectionsDialog extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property({ type: Object })

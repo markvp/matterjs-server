@@ -41,7 +41,6 @@ function getUniqueEndpoints(node: MatterNode) {
 @customElement("matter-node-view")
 class MatterNodeView extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property()
@@ -50,7 +49,7 @@ class MatterNodeView extends LitElement {
     override render() {
         if (!this.node) {
             return html`
-                <dashboard-header title="Node not found" .client=${this.client} backButton="#"></dashboard-header>
+                <dashboard-header title="Node not found" backButton="#"></dashboard-header>
                 <div class="not-found">
                     <ha-svg-icon .path=${mdiAlertCircleOutline}></ha-svg-icon>
                     <p>Node not found</p>

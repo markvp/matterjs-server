@@ -62,7 +62,6 @@ function getNodeDeviceTypes(node: MatterNode): DeviceType[] {
 @customElement("node-details")
 export class NodeDetails extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property() public node?: MatterNode;
@@ -71,7 +70,6 @@ export class NodeDetails extends LitElement {
     private _updateInitiated: boolean = false;
 
     @consume({ context: bindingContext })
-    @property({ attribute: false })
     endpoint!: number;
 
     protected override render() {

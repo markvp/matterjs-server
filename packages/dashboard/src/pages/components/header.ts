@@ -38,8 +38,7 @@ export class DashboardHeader extends LitElement {
     @property({ type: Boolean }) public hasWifiDevices?: boolean;
 
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
-    public client!: MatterClient;
+    public client?: MatterClient;
 
     @state() private _themePreference: ThemePreference = ThemeService.preference;
     @state() private _effectiveTheme: EffectiveTheme = ThemeService.effectiveTheme;
@@ -71,7 +70,7 @@ export class DashboardHeader extends LitElement {
 
     private _openSettings() {
         if (this.client) {
-            showSettingsDialog(this.client);
+            showSettingsDialog();
         }
     }
 

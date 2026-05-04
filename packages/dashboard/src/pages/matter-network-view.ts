@@ -41,7 +41,6 @@ const HIDE_OPTIONS: readonly { key: HideOptionKey; label: string }[] = [
 @customElement("matter-network-view")
 class MatterNetworkView extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property({ type: Object })

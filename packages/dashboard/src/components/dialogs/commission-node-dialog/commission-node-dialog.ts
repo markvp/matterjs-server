@@ -12,14 +12,13 @@ import "@material/web/list/list-item";
 import type { MdDialog } from "@material/web/dialog/dialog.js";
 import { MatterClient, MatterNode } from "@matter-server/ws-client";
 import { html, LitElement } from "lit";
-import { customElement, property, state } from "lit/decorators.js";
+import { customElement, state } from "lit/decorators.js";
 import { clientContext } from "../../../client/client-context.js";
 import { preventDefault } from "../../../util/prevent_default.js";
 
 @customElement("commission-node-dialog")
 export class ComissionNodeDialog extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @state() private _mode?: "wifi" | "thread" | "existing";
@@ -92,7 +91,7 @@ export class ComissionNodeDialog extends LitElement {
 
     private _requestSettings() {
         import("../settings/show-settings-dialog.js").then(({ showSettingsDialog }) => {
-            showSettingsDialog(this.client, "network-credentials");
+            showSettingsDialog("network-credentials");
         });
         this._close();
     }

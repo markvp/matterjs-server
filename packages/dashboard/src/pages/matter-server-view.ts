@@ -31,7 +31,6 @@ declare global {
 @customElement("matter-server-view")
 class MatterServerView extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property()

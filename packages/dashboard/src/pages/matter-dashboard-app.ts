@@ -11,7 +11,6 @@ import { LitElement, PropertyValueMap, css, html } from "lit";
 import { customElement, state } from "lit/decorators.js";
 import { clientContext } from "../client/client-context.js";
 import "../components/ha-svg-icon";
-import { clone } from "../util/clone_class.js";
 import type { Route } from "../util/routing.js";
 import "./components/header";
 import type { ActiveView } from "./components/header.js";
@@ -48,7 +47,7 @@ class MatterDashboardApp extends LitElement {
     /** Track whether nodes have been loaded at least once (to avoid redirecting before data arrives) */
     private _nodesLoaded = false;
 
-    private provider = new ContextProvider(this, { context: clientContext, initialValue: this.client });
+    private provider = new ContextProvider(this, { context: clientContext });
 
     /** Reference to updateRoute function so it can be called from event listeners */
     private _updateRoute?: () => void;
@@ -108,7 +107,7 @@ class MatterDashboardApp extends LitElement {
         this.client.startListening().then(
             () => {
                 this._state = "connected";
-                this.provider.setValue(clone(this.client));
+                this.provider.setValue(this.client, true);
                 this._setupEventListeners();
             },
             (_err: MatterError) => {
@@ -127,10 +126,10 @@ class MatterDashboardApp extends LitElement {
                 this._updateRoute();
             }
             this.requestUpdate();
-            this.provider.setValue(clone(this.client));
+            this.provider.setValue(this.client, true);
         });
         this.client.addEventListener("server_info_updated", () => {
-            this.provider.setValue(clone(this.client));
+            this.provider.setValue(this.client, true);
         });
         this.client.addEventListener("connection_lost", () => {
             this._state = "disconnected";

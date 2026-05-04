@@ -15,7 +15,7 @@ import { consume } from "@lit/context";
 import { MatterClient } from "@matter-server/ws-client";
 import { mdiFile, mdiPlus } from "@mdi/js";
 import { LitElement, css, html, nothing } from "lit";
-import { customElement, property } from "lit/decorators.js";
+import { customElement } from "lit/decorators.js";
 import { clientContext } from "../../client/client-context.js";
 import { showAlertDialog, showPromptDialog } from "../../components/dialog-box/show-dialog-box.js";
 import { showCommissionNodeDialog } from "../../components/dialogs/commission-node-dialog/show-commission-node-dialog.js";
@@ -25,8 +25,7 @@ import { handleAsync } from "../../util/async-handler.js";
 @customElement("server-details")
 export class ServerDetails extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
-    public client!: MatterClient;
+    public client?: MatterClient;
 
     protected override render() {
         if (!this.client) return html``;
@@ -100,7 +99,7 @@ export class ServerDetails extends LitElement {
             reader.readAsText(selectedFile, "UTF-8");
             reader.onload = async () => {
                 try {
-                    await this.client.importTestNode(reader.result?.toString() ?? "");
+                    await this.client?.importTestNode(reader.result?.toString() ?? "");
                 } catch (err: any) {
                     showAlertDialog({
                         title: "Failed to import test node",

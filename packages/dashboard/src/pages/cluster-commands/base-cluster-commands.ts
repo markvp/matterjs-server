@@ -17,7 +17,6 @@ import { reducedMotionStyles } from "../../util/shared-styles.js";
  */
 export abstract class BaseClusterCommands extends LitElement {
     @consume({ context: clientContext, subscribe: true })
-    @property({ attribute: false })
     public client!: MatterClient;
 
     @property({ attribute: false })

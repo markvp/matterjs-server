@@ -79,7 +79,7 @@ export class NetworkDetails extends LitElement {
     @property({ type: Object })
     public threadEdgePairs: Map<string, ThreadEdgePair> = new Map();
 
-    @consume({ context: clientContext, subscribe: true })
+    @consume({ context: clientContext })
     private client!: MatterClient;
 
     @state()
@@ -1101,7 +1101,6 @@ export class NetworkDetails extends LitElement {
                 ${this._showUpdateDialog
                     ? html`
                           <update-connections-dialog
-                              .client=${this.client}
                               .nodes=${this.nodes}
                               selectedNodeType="unknown"
                               .selectedNodeName=${this._getSelectedNodeName()}
